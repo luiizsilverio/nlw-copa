@@ -8,6 +8,9 @@ module.exports = {
       fontFamily: {
         sans: ['Roboto', 'sans-serif'],
       },    
+      backgroundImage: {
+        fundo: "url(/app-bg.png)"
+      },
       colors: {
         gray: {
           100: '#e1e1e6',
