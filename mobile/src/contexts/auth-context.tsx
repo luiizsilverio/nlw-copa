@@ -2,6 +2,8 @@ import { createContext, useState, useEffect, ReactNode } from "react";
 import * as AuthSession from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
+
+import { api } from "../services/api.js";
 import { ENV } from '../../src/.env.js';
 
 WebBrowser.maybeCompleteAuthSession();
