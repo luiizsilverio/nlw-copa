@@ -1,61 +1,40 @@
 import Fastify from 'fastify';
+import jwt from '@fastify/jwt';
 import cors from '@fastify/cors';
-import { z } from 'zod';
-import { PrismaClient } from '@prisma/client';
-import ShortUniqueId from 'short-unique-id';
 
-const prisma = new PrismaClient({
-  log: ['query'],
-})
-
+import { poolRoutes } from './routes/pool';
+import { userRoutes } from './routes/user';
+import { guessRoutes } from './routes/guess';
+import { authRoutes } from './routes/auth';
+import { gameRoutes } from './routes/game';
 
 async function start() {
+
   const fastify = Fastify({
-    logger: true, /* geração de logs */
+    logger: false, /* geração de logs */
   })
 
   await fastify.register(cors, {
     origin: true,
   })
 
-  // ROTAS -----
+  await fastify.register(jwt, {
+    secret: "nlwcopa"
+  })
+
+  await fastify.register(poolRoutes);
+
+  await fastify.register(authRoutes);
+
+  await fastify.register(gameRoutes);
   
-  fastify.get('/pools/count', async () => {
-    const count = await prisma.pool.count();
-    return { count }
-  })
+  await fastify.register(guessRoutes);  
+  
+  await fastify.register(userRoutes);
 
-  fastify.get('/users/count', async () => {
-    const count = await prisma.user.count();
-    return { count }
-  })
-
-  fastify.get('/guesses/count', async () => {
-    const count = await prisma.guess.count();
-    return { count }
-  })
-
-  fastify.post('/pools', async (request, response) => {
-    const createBody = z.object({
-      title: z.string(), //.nullable()
-    })
-
-    const { title } = createBody.parse(request.body);
-
-    const generate = new ShortUniqueId({ length: 6 });
-    const code = generate().toUpperCase();
-
-    await prisma.pool.create({
-      data: {
-        title,
-        code
-      }
-    })
-
-    return response.status(201).send({ code });
-  })
-
-  await fastify.listen({ port: 3333, /*host: '0.0.0.0'*/ });
+  await fastify.listen({ port: 3333, /*host: '0.0.0.0'*/ }, () => {
+    console.log('Rodando NLW-Copa na porta 3333');
+  });
 }
 
 start();

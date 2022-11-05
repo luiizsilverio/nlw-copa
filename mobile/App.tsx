@@ -28,7 +28,7 @@ export default function App() {
           />
 
           {
-            fontsLoaded ? <Pools /> : <Loading />
+            fontsLoaded ? <SignIn /> : <Loading />
           }
           
       </AuthContextProvider> 
