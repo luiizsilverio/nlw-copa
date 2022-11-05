@@ -54,7 +54,7 @@ export async function poolRoutes(fastify: FastifyInstance) {
   })
 
 
-  fastify.post('/pools/:id/join', 
+  fastify.post('/pools/join', 
     {
       onRequest: [authenticate]
     },
@@ -91,6 +91,17 @@ export async function poolRoutes(fastify: FastifyInstance) {
         })
       }
 
+      if (!pool.ownerId) {
+        await prisma.pool.update({
+          where: {
+            id: pool.id,
+          },
+          data: {
+            ownerId: request.user.sub,
+          }
+        })
+      }
+
       await prisma.participant.create({
         data: {
           poolId: pool.id,
@@ -101,4 +112,102 @@ export async function poolRoutes(fastify: FastifyInstance) {
       return response.status(201).send();
     }
   )
+
+
+  fastify.get('/pools', 
+    {
+      onRequest: [authenticate]
+    },
+    async (request) => {
+
+      // encontra os bolões de que o usuário faz parte (some)
+      const pools = await prisma.pool.findMany({
+        where: {
+          participants: {
+            some: {
+              userId: request.user.sub,
+            }
+          }
+        },
+        include: {
+          _count: {
+            select: {
+              participants: true,
+            }
+          },
+          owner: {
+            select: {
+              id: true,
+              name: true,
+            }
+          },
+          participants: {
+            select: {
+              id: true,    
+              
+              user: {
+                select: {
+                  avatarUrl: true,
+                }
+              }
+            },
+            take: 4,
+          }
+        }
+      })
+
+
+      return { pools }      
+    }
+  )
+
+
+  fastify.get('/pools/:id', 
+    {
+      onRequest: [authenticate]
+    },
+    async (request) => {
+    
+      const poolParams = z.object({
+        id: z.string(),
+      })
+
+      const { id } = poolParams.parse(request.params);
+
+      const pool = await prisma.pool.findUnique({
+        where: {
+          id,
+        },
+        include: {
+          _count: {
+            select: {
+              participants: true,
+            }
+          },
+          owner: {
+            select: {
+              id: true,
+              name: true,
+            }
+          },
+          participants: {
+            select: {
+              id: true,    
+              
+              user: {
+                select: {
+                  avatarUrl: true,
+                }
+              }
+            },
+            take: 4,
+          }
+        }
+      })
+
+      return { pool }
+    }
+  )
+
+
 }
