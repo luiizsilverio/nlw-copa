@@ -4,6 +4,7 @@ import { useTheme } from 'native-base';
 import { Platform } from 'react-native';
 import { New } from '../screens/new';
 import { Pools } from '../screens/pools';
+import { Find } from '../screens/find';
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
@@ -21,28 +22,40 @@ export function AppRoutes() {
         position: 'absolute',
         height: sizes[22],
         borderTopWidth: 0,
-        backgroundColor: colors.gray[800]
+        backgroundColor: colors.gray[800],        
       },
       tabBarItemStyle: {
         position: 'relative',
-        top: Platform.OS === 'android' ? -10 : 0,
-
-      }
+        top: Platform.OS === 'android' ? -5 : 0,
+      },      
     }}>
+
       <Screen
         name="new"
         component={New}
         options={{
-          tabBarIcon: ({ color }) => <PlusCircle color={color} size={size} />
+          tabBarIcon: ({ color }) => <PlusCircle color={color} size={size} />,
+          tabBarLabel: 'Novo bolão',                  
         }}
       />
+
       <Screen
         name="pools"
         component={Pools}
         options={{
-          tabBarIcon: ({ color }) => <SoccerBall color={color} size={size} />
+          tabBarIcon: ({ color }) => <SoccerBall color={color} size={size} />,
+          tabBarLabel: 'Meus bolões'
         }}
       />
+
+      <Screen
+        name="find"
+        component={Find}
+        options={{
+          tabBarButton: () => null,
+        }}
+      />
+
     </Navigator>
   )
 }

@@ -32,7 +32,7 @@ async function start() {
   
   await fastify.register(userRoutes);
 
-  await fastify.listen({ port: 3333, /*host: '0.0.0.0'*/ }, () => {
+  await fastify.listen({ port: 3333, host: '0.0.0.0' }, () => {
     console.log('Rodando NLW-Copa na porta 3333');
   });
 }
