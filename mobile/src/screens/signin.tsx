@@ -7,7 +7,7 @@ import Logo from '../assets/logo.svg';
 import { Button } from '../components/button';
 
 export function SignIn() {
-  const { signIn } = useAuth();
+  const { signIn, isLoading } = useAuth();
 
   return (
     <>
@@ -20,6 +20,8 @@ export function SignIn() {
           leftIcon={<Icon as={Fontisto} name="google" color="white" size="md" />}
           mt={12}
           onPress={signIn}
+          isLoading={isLoading}
+          _loading={{ _spinner: { color: 'white' }}}
         />
 
         <Text color="white" textAlign="center" mt={4}>
