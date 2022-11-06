@@ -72,11 +72,11 @@ export async function guessRoutes(fastify: FastifyInstance) {
         })
       }
 
-      if (game.date < new Date()) {
-        return response.status(400).send({
-          message: 'Jogo já foi realizado!'
-        })
-      }
+      // if (game.date < new Date()) {
+      //   return response.status(400).send({
+      //     message: 'Jogo já foi realizado!'
+      //   })
+      // }
 
       await prisma.guess.create({
         data: {

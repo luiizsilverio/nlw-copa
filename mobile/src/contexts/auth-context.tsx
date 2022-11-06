@@ -4,7 +4,6 @@ import * as WebBrowser from 'expo-web-browser';
 import * as Google from 'expo-auth-session/providers/google';
 
 import { api } from '../services/api';
-import { ENV } from '../../src/.env.js';
 
 WebBrowser.maybeCompleteAuthSession();
 
@@ -30,7 +29,7 @@ export function AuthContextProvider({ children }: AuthProviderProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   const [request, response, promptAsync] = Google.useAuthRequest({
-    clientId: ENV.CLIENT_ID,
+    clientId: process.env.CLIENT_ID, //ENV.CLIENT_ID,
     redirectUri: AuthSession.makeRedirectUri({ useProxy: true }),
     scopes: ['profile', 'email']
   })

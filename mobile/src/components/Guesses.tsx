@@ -3,12 +3,14 @@ import { useToast, FlatList, Text } from 'native-base';
 import { api } from "../services/api";
 import { Game, GameProps } from '../components/Game';
 import { Loading } from './loading';
+import { EmptyMyPoolList } from './EmptyMyPoolList';
 
 interface Props {
   poolId: string;
+  code: string;
 }
 
-export function Guesses({ poolId }: Props) {
+export function Guesses({ poolId, code }: Props) {
   const [isLoading, setIsLoading] = useState(true);
   const [games, setGames] = useState<GameProps[]>([]);
   const [team1Points, setTeam1Points] = useState('');
@@ -46,8 +48,6 @@ export function Guesses({ poolId }: Props) {
       }
 
       setIsLoading(true);
-      console.log(`/pools/${poolId}/games/${gameId}/guesses`)
-      console.log(team1Points, team2Points)
 
       await api.post(`/pools/${poolId}/games/${gameId}/guesses`, {
         team1Points: Number(team1Points),
@@ -63,7 +63,7 @@ export function Guesses({ poolId }: Props) {
       fetchGames();
     }
     catch (error) {
-      console.warn(error);
+      console.warn(error.message);
       toast.show({
         title: 'Não foi possível enviar o palpite',
         placement: 'top',
@@ -92,9 +92,11 @@ export function Guesses({ poolId }: Props) {
           data={item}
           setFirstTeamPoints={setTeam1Points}
           setSecondTeamPoints={setTeam2Points}
-          onGuessConfirm={() => handleGuessConfirm(item.id)}
+          onGuessConfirm={() => handleGuessConfirm(item.id)}          
         />
       )}
+      _contentContainerStyle={{ pb: 10 }}
+      ListEmptyComponent={() => <EmptyMyPoolList code={code} />}
     />
   );
 }
