@@ -162,21 +162,21 @@ export async function poolRoutes(fastify: FastifyInstance) {
   )
 
 
-  fastify.get('/pools/:id', 
+  fastify.get('/pools/:poolId', 
     {
       onRequest: [authenticate]
     },
-    async (request) => {
+    async (request, response) => {
     
       const poolParams = z.object({
-        id: z.string(),
+        poolId: z.string(),
       })
 
-      const { id } = poolParams.parse(request.params);
+      const { poolId } = poolParams.parse(request.params);
 
       const pool = await prisma.pool.findUnique({
         where: {
-          id,
+          id: poolId,
         },
         include: {
           _count: {
@@ -204,6 +204,12 @@ export async function poolRoutes(fastify: FastifyInstance) {
           }
         }
       })
+
+      if (!pool) {
+        return response.status(400).send({
+          message: 'Pool not found.'
+        })
+      }
 
       return { pool }
     }
