@@ -16,7 +16,7 @@
 ## Sobre a aplicação
 Aplicação desenvolvida durante o NLW Copa, promovido pela Rocketseat.<br />
 Durante o evento, foram desenvolvidas 3 aplicações, uma API em Node, uma aplicação React com Next e um App em React Native.<br />
-A aplicação web permite cadastrar bolões. A aplicação mobile faz uma autenticação por meio da conta do GMail; permite fazer palpites dos jogos e buscar um bolão.<br />
+A aplicação web permite cadastrar bolões. A aplicação mobile faz uma autenticação por meio da conta do GMail; permite fazer palpites nos jogos e buscar um bolão.<br />
 <br />
 
 ## :hammer_and_wrench: Tecnologias
@@ -41,7 +41,7 @@ Baixe o repositório com git clone e entre na pasta do projeto.
 $ git clone https://github.com/luiizsilverio/nlw-copa
 ```
 * Back-end
-Renomeie o arquivo __.env.example__ para __.env__.
+  * Renomeie o arquivo __.env.example__ para __.env__.
 ```bash
 $ cd server
 $ npm install
