@@ -15,8 +15,8 @@ interface GuessProps {
 
 export interface GameProps {
   id: string;
-  team1CountryCode: string;
-  team2CountryCode: string;
+  Team1CountryCode: string;
+  Team2CountryCode: string;
   guess: null | GuessProps;
 };
 
@@ -42,7 +42,7 @@ export function Game({ data, setFirstTeamPoints, setSecondTeamPoints, onGuessCon
       p={4}
     >
       <Text color="gray.100" fontFamily="heading" fontSize="sm">
-        {getName(data.team1CountryCode)} vs. {getName(data.team2CountryCode)}
+        {getName(data.Team1CountryCode)} vs. {getName(data.Team2CountryCode)}
       </Text>
 
       <Text color="gray.200" fontSize="xs">
@@ -51,7 +51,7 @@ export function Game({ data, setFirstTeamPoints, setSecondTeamPoints, onGuessCon
 
       <HStack mt={4} w="full" justifyContent="space-between" alignItems="center">
         <Team
-          code={data.team1CountryCode}
+          code={data.Team1CountryCode}
           position="right"
           onChangeText={setFirstTeamPoints}
         />
@@ -59,7 +59,7 @@ export function Game({ data, setFirstTeamPoints, setSecondTeamPoints, onGuessCon
         <X color={colors.gray[300]} size={sizes[6]} />
 
         <Team
-          code={data.team2CountryCode}
+          code={data.Team2CountryCode}
           position="left"
           onChangeText={setSecondTeamPoints}
         />
